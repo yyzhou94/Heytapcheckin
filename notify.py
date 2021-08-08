@@ -116,7 +116,7 @@ def sendWechat(wex_id,wex_secret,wx_agentld,content,thumb_media_id=''):
                 "articles": [
                     {
                         "title": "欢太商城",
-                        "thumb_media_id": "2SPSvjAVqt1bCg9neaA__SpIVe-MIReQ1Fv2Z5bx1Hmj-dqh0P_3f1P_hYCS1MRzS",
+                        "thumb_media_id": thumb_media_id,
                         "author": "签到小助手",
                         "content_source_url": "",
                         "content": html,
