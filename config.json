@@ -1,0 +1,18 @@
+{
+  "login": [
+    {
+      "cookies": "",
+      "User-Agent": "",
+      "if_draw": false,
+      "text": "cookie请转义后再填入，if_draw为抽奖总开关，设置为false将不参与任何抽奖，应对一些抽奖黑号（今天新注册一个帐号，抽奖就是不中）"
+    }
+  ],
+  "enterpriseWechat": {
+    "id": "",
+    "agentld": 1000001,
+    "secret": "",
+    "thumb_media_id": "",
+    "text": "thumb_media_id可以不填，不填默认纯文本推送，填了图文推送"
+  },
+  "pushplusToken": ""
+}
