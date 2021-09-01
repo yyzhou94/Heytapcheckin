@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-# @Time    : 2021/8/8
-# @Author  : hwkxk(丶大K丶)
-# @Email   : k@hwkxk.cn
+# @Time    : 2021/9/1
+
 
 import json
 import notify
@@ -140,7 +139,7 @@ class Heytap:
                                 print('【每日签到失败】: ' + res1 + '\n')
                         else:
                             # print(str(qd['credits']),str(qd['type']),str(qd['gift']))
-                            if len(qd['type']) == 0:
+                            if not qd['type']:
                                 data = "amount=" + str(qd['credits'])
                             else:
                                 data = "amount=" + str(qd['credits']) + "&type=" + str(qd['type']) + "&gift=" + str(
