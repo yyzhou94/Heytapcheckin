@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# @Time    : 2021/9/1
+# @Time    : 2021/9/19
 
 
 import json
@@ -118,50 +118,41 @@ class Heytap:
                 'cookie': self.HT_cookies,
                 'referer': 'https://store.oppo.com/cn/app/taskCenter/index'
             }
-            res = self.taskCenter()
+            
+            res = taskCenter()
             status = res['data']['userReportInfoForm']['status']
             if status == 0:
                 res = res['data']['userReportInfoForm']['gifts']
                 for data in res:
                     if data['date'] == dated:
                         qd = data
-                        if not qd['today']:
-                            data = "amount=" + str(qd['credits'])
-                            res1 = self.client.post('https://store.oppo.com/cn/oapi/credits/web/report/immediately',
-                                                    headers=headers,
-                                                    data=data)
-                            res1 = res1.json()
-                            if res1['code'] == 200:
-                                self.log += '【每日签到成功】: ' + res1['data']['message'] + '\n'
-                                print('【每日签到成功】: ' + res1['data']['message'] + '\n')
-                            else:
-                                self.log += '【每日签到失败】: ' + res1 + '\n'
-                                print('【每日签到失败】: ' + res1 + '\n')
-                        else:
-                            # print(str(qd['credits']),str(qd['type']),str(qd['gift']))
-                            if not qd['type']:
-                                data = "amount=" + str(qd['credits'])
-                            else:
-                                data = "amount=" + str(qd['credits']) + "&type=" + str(qd['type']) + "&gift=" + str(
-                                    qd['gift'])
-                            res1 = self.client.post('https://store.oppo.com/cn/oapi/credits/web/report/immediately',
-                                                    headers=headers,
-                                                    data=data)
-                            res1 = res1.json()
-                            if res1['code'] == 200:
-                                self.log += '【每日签到成功】: ' + res1['data']['message'] + '\n'
-                                print('【每日签到成功】: ' + res1['data']['message'] + '\n')
-                            else:
-                                self.log += '【每日签到失败】: ' + str(res1) + '\n'
-                                print('【每日签到失败】: ' + str(res1) + '\n')
+                if qd['today'] == False:
+                    data = "amount=" + str(qd['credits'])
+                    res1 = client.post('https://store.oppo.com/cn/oapi/credits/web/report/immediately', headers=headers,data=data)
+                    res1 = res1.json()
+                    if res1['code'] == 200:
+                        logger.info('【每日签到成功】: ' + res1['data']['message'])
+                    else:
+                        logger.info('【每日签到失败】: ' + str(res1))
+                else:
+                    print(str(qd['credits']),str(qd['type']),str(qd['gift']))
+                    if len(str(qd['type'])) < 1 :
+                        data = "amount=" + str(qd['credits'])
+                    else:
+                        data = "amount=" + str(qd['credits']) + "&type=" + str(qd['type']) + "&gift=" + str(qd['gift'])
+                    res1 = client.post('https://store.oppo.com/cn/oapi/credits/web/report/immediately',  headers=headers,data=data)
+                    res1 = res1.json()
+                    if res1['code'] == 200:
+                        logger.info('【每日签到成功】: ' + res1['data']['message'])
+                    else:
+                        logger.info('【每日签到失败】: ' + str(res1))
             else:
-                self.log += '【每日签到】: 已经签到过了！\n'
-                print('【每日签到】: 已经签到过了！\n')
+                logger.info('【每日签到】: 已经签到过了！' )   
             time.sleep(1)
         except Exception as e:
             print(traceback.format_exc())
-            self.log += '【每日签到】: 错误，原因为: ' + str(e) + '\n'
-            print('【每日签到】: 错误，原因为: ' + str(e) + '\n')
+            logging.error('【每日签到】: 错误，原因为: ' + str(e))
+                        
 
     # 浏览商品 10个sku +20 分
     # 位置: APP → 我的 → 签到 → 每日任务 → 浏览商品
@@ -573,7 +564,7 @@ class Heytap:
                     self.daySign_task()  # 执行每日签到
                     self.daily_viewgoods()  # 执行每日商品浏览任务
                     self.daily_sharegoods()  # 执行每日商品分享任务
-                    self.daily_viewpush()  # 执行每日点推送任务
+                    #self.daily_viewpush()  # 执行每日点推送任务
                     self.doTask_and_draw()  # 自己修改的接口，针对活动任务及抽奖，新增及删除活动请修改self.act_task
                     self.zaoshui_task()  # 早睡报名
                 except Exception as e:
