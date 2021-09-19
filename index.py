@@ -119,7 +119,7 @@ class Heytap:
                 'referer': 'https://store.oppo.com/cn/app/taskCenter/index'
             }
             
-            res = taskCenter()
+            res = self.taskCenter()
             status = res['data']['userReportInfoForm']['status']
             if status == 0:
                 res = res['data']['userReportInfoForm']['gifts']
@@ -128,30 +128,36 @@ class Heytap:
                         qd = data
                 if qd['today'] == False:
                     data = "amount=" + str(qd['credits'])
-                    res1 = client.post('https://store.oppo.com/cn/oapi/credits/web/report/immediately', headers=headers,data=data)
+                    res1 = self.client.post('https://store.oppo.com/cn/oapi/credits/web/report/immediately', headers=headers,data=data)
                     res1 = res1.json()
                     if res1['code'] == 200:
-                        logger.info('【每日签到成功】: ' + res1['data']['message'])
+                        self.log += '【每日签到成功】: ' + res1['data']['message'] + '\n'
+                        print('【每日签到成功】: ' + res1['data']['message'] + '\n')
                     else:
-                        logger.info('【每日签到失败】: ' + str(res1))
+                        self.log += '【每日签到失败】: ' + res1 + '\n'
+                        print('【每日签到失败】: ' + res1 + '\n')
                 else:
                     print(str(qd['credits']),str(qd['type']),str(qd['gift']))
                     if len(str(qd['type'])) < 1 :
                         data = "amount=" + str(qd['credits'])
                     else:
                         data = "amount=" + str(qd['credits']) + "&type=" + str(qd['type']) + "&gift=" + str(qd['gift'])
-                    res1 = client.post('https://store.oppo.com/cn/oapi/credits/web/report/immediately',  headers=headers,data=data)
+                    res1 = self.client.post('https://store.oppo.com/cn/oapi/credits/web/report/immediately',  headers=headers,data=data)
                     res1 = res1.json()
                     if res1['code'] == 200:
-                        logger.info('【每日签到成功】: ' + res1['data']['message'])
+                        self.log += '【每日签到成功】: ' + res1['data']['message'] + '\n'
+                        print('【每日签到成功】: ' + res1['data']['message'] + '\n')
                     else:
-                        logger.info('【每日签到失败】: ' + str(res1))
+                        self.log += '【每日签到失败】: ' + str(res1) + '\n'
+                        print('【每日签到失败】: ' + str(res1) + '\n')
             else:
-                logger.info('【每日签到】: 已经签到过了！' )   
+                self.log += '【每日签到】: 已经签到过了！\n'
+                print('【每日签到】: 已经签到过了！\n')  
             time.sleep(1)
         except Exception as e:
             print(traceback.format_exc())
-            logging.error('【每日签到】: 错误，原因为: ' + str(e))
+            self.log += '【每日签到】: 错误，原因为: ' + str(e) + '\n'
+            print('【每日签到】: 错误，原因为: ' + str(e) + '\n')
                         
 
     # 浏览商品 10个sku +20 分
