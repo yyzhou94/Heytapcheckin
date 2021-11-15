@@ -185,11 +185,11 @@ class Heytap:
                 if data['name'] == '浏览商品':
                     if data['completeStatus'] == 0:
                         # 原链接貌似获取不到商品id，更换一个 原链接https://msec.opposhop.cn/goods/v1/SeckillRound/goods/3016?pageSize=12&currentPage=1
-                        shopList = self.client.get(f'https://msec.opposhop.cn/goods/v1/products/010234' )
+                        shopList = self.client.get(f'https://msec.opposhop.cn/goods/v1/products/010239' )
                         res = shopList.json()
                         if res['meta']['code'] == 200:
                             i = 0
-                            for skuinfo in res['details'][2]['infos']:
+                            for skuinfo in res['details'][0]['infos']:
                                 skuid = skuinfo['skuId']
                                 print('正在浏览商品ID：', skuid)
                                 self.client.get('https://msec.opposhop.cn/goods/v1/info/sku?skuId=' + str(skuid),
