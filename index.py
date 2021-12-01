@@ -185,12 +185,12 @@ class Heytap:
                 if data['name'] == '浏览商品':
                     if data['completeStatus'] == 0:
                         # 原链接貌似获取不到商品id，更换一个 原链接https://msec.opposhop.cn/goods/v1/SeckillRound/goods/3016?pageSize=12&currentPage=1
-                        shopList = self.client.get(f'https://msec.opposhop.cn/goods/v1/products/010234' )
+                        shopList = self.client.get(f'https://msec.opposhop.cn/goods/v1/SeckillRound/goods/115?pageSize=12&currentPage=1' )
                         res = shopList.json()
                         if res['meta']['code'] == 200:
                             i = 0
-                            for skuinfo in res['details'][2]['infos']:
-                                skuid = skuinfo['skuId']
+                            for skuinfo in res['detail']:
+                                skuid = skuinfo['skuid']
                                 print('正在浏览商品ID：', skuid)
                                 self.client.get('https://msec.opposhop.cn/goods/v1/info/sku?skuId=' + str(skuid),
                                                 headers=headers)
@@ -546,7 +546,7 @@ class Heytap:
             self.client = self.get_infouser()
             if self.client:
                 try:
-                    self.daySign_task()  # 执行每日签到
+                    # self.daySign_task()  # 执行每日签到
                     self.daily_viewgoods()  # 执行每日商品浏览任务
                     self.daily_sharegoods()  # 执行每日商品分享任务
                     self.doTask_and_draw()  # 自己修改的接口，针对活动任务及抽奖，新增及删除活动请修改act_list.py
